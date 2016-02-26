@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Example layout</title>
+    </head>
+    <body>
+
+        <!-- This is how you insert flash messages into your page for non-ajax requests -->
+        <script n:ifset="$flashSession" class="flashes-src" type="application/json">{$flashSession}</script>
+
+
+        <!-- Dynamic snippets -->
+        <!-- The n:dynamic macro is essentially the same as writing the following: -->
+        <!-- <ul n:snippet="list" class="snippet-container" data-dynamic-mask="{snippetId article-\d+}"> -->
+        <section n:snippet="articles" n:dynamic="article-\d+">
+            {foreach $items as $item}
+                <article n:snippet="article-$item->id">{$item->title}</article>
+            {/foreach}
+        </section>
+
+    </body>
+</html>
