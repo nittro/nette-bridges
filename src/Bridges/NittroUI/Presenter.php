@@ -6,7 +6,7 @@
  * Time: 12:44
  */
 
-namespace Nittro\Nette\Bridges\NittroUI;
+namespace Nittro\Bridges\NittroUI;
 use Nette\Application\UI;
 
 

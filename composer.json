@@ -12,6 +12,9 @@
     },
     "require": {
         "nette/application": "^2.3",
-        "latte/latte": "^2.3"
+        "latte/latte": "^2.3",
+        "tracy/tracy": "^2.3",
+        "nette/di": "^2.3",
+        "nette/bootstrap": "^2.3"
     }
 }

@@ -6,7 +6,7 @@
  * Time: 13:09
  */
 
-namespace Nittro\Nette\Bridges\NittroLatte;
+namespace Nittro\Bridges\NittroLatte;
 use Latte\Compiler,
     Latte\Macros\MacroSet;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nittro\Nette\Bridges\NittroUI;
+namespace Nittro\Bridges\NittroUI;
 use Nette\Http\SessionSection,
     Nette\Application\AbortException;
 
