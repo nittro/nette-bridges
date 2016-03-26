@@ -1,5 +1,5 @@
 {
-    "name": "nittro/nette",
+    "name": "nittro/nette-bridges",
     "type": "library",
     "description": "Nittro PHP bridges",
     "homepage": "https://www.nittro.org/",
