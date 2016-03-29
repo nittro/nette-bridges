@@ -72,6 +72,14 @@ trait PresenterUtils {
     }
 
     /**
+     * @return bool
+     */
+    public function willRedrawDefault()
+    {
+        return $this->redrawDefault;
+    }
+
+    /**
      * @param array $snippets
      * @return $this
      */
