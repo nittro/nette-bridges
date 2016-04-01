@@ -90,7 +90,7 @@ trait PresenterUtils {
     }
 
     /**
-     * @return bool
+     * @return $this
      */
     public function redrawDefault()
     {
@@ -99,6 +99,9 @@ trait PresenterUtils {
                 $this->redrawControl($snippet);
             }
         }
+
+        return $this;
+
     }
 
 
@@ -109,7 +112,7 @@ trait PresenterUtils {
      * @param string $destination
      * @param array $args
      * @throws AbortException
-     * @return void
+     * @return $this
      */
     public function postGet($destination, $args = [])
     {
@@ -119,6 +122,9 @@ trait PresenterUtils {
         } else {
             call_user_func_array([$this, 'redirect'], func_get_args());
         }
+
+        return $this;
+        
     }
 
 
