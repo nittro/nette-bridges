@@ -124,7 +124,15 @@ trait PresenterUtils {
         }
 
         return $this;
-        
+
+    }
+
+    /**
+     * @return $this
+     */
+    public function allowAjax() {
+        $this->payload->allowAjax = true;
+        return $this;
     }
 
 

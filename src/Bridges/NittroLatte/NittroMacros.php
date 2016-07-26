@@ -18,6 +18,6 @@ class NittroMacros extends MacroSet {
         $me = new static($compiler);
         $me->addMacro('snippetId', 'echo %escape($_control->getSnippetId(%node.word))');
         $me->addMacro('param', 'echo %escape($_control->getParameterId(%node.word))');
-        $me->addMacro('dynamic', null, null, 'echo Nette\Utils\Html::el()->setClass("snippet-container")->data("dynamic-mask", $_control->getSnippetId(%node.word))->attributes()');
+        $me->addMacro('dynamic', null, null, 'echo Nette\Utils\Html::el()->setClass("nittro-snippet-container")->data("dynamic-mask", $_control->getSnippetId(%node.word))->attributes()');
     }
 }
