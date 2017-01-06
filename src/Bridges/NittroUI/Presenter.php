@@ -10,7 +10,7 @@ namespace Nittro\Bridges\NittroUI;
 use Nette\Application\UI;
 
 
-class Presenter extends UI\Presenter {
+abstract class Presenter extends UI\Presenter {
     use PresenterUtils;
 
 

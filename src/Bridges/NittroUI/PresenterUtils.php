@@ -135,6 +135,14 @@ trait PresenterUtils {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function disallowAjax() {
+        $this->payload->allowAjax = false;
+        return $this;
+    }
+
 
     /************* Flash messages *************/
 
