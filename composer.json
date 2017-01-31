@@ -11,7 +11,7 @@
         "classmap": ["src/"]
     },
     "require-dev": {
-        "nette/application": "^2.3",
-        "latte/latte": "^2.3"
+        "nette/application": "^2.4",
+        "latte/latte": "^2.4"
     }
 }
