@@ -24,6 +24,7 @@ class NittroMacros extends MacroSet {
         $me->addMacro('param', 'echo %escape($_control->getParameterId(%node.word))');
         $me->addMacro('dynamic', null, null, 'echo Nette\Utils\Html::el()->setClass("nittro-snippet-container")->data("dynamic-mask", $_control->getSnippetId(%node.word))->attributes()');
         $me->addMacro('errors', [$me, 'macroErrors'], [$me, 'macroErrorsEnd'], null, self::AUTO_EMPTY);
+        $me->addMacro('formErrors', [$me, 'macroErrors'], [$me, 'macroErrorsEnd'], null, self::AUTO_EMPTY);
     }
 
 
@@ -46,15 +47,33 @@ class NittroMacros extends MacroSet {
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
 
-        $prefix = $writer->write(
-            '$_input = ' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '') . 'end($this->global->formsStack)[%0.word];'
-            . ' $_el = Nette\Utils\Html::el(%1.var)->setId($_input->getHtmlId() . \'-errors\')'
-            . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-            . ' foreach($_input->getErrors() as $_e) $_el->create(%2.var)->setText($_e)',
-            $name,
-            $tagName,
-            $childName
-        );
+        if ($node->name === 'formErrors') {
+            $prefix = $writer->write(
+                '$_form = ' . ($name && $name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+                . ($name ? '$this->global->uiControl[%0.word];' : 'end($this->global->formsStack);')
+                . ' $_el = Nette\Utils\Html::el(%1.var)->setId($_form->getElementPrototype()->id . \'-errors\')'
+                . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
+                . ' foreach($_form->getErrors() as $_e) $_el->create(%2.var)->setText($_e)',
+                $name,
+                $tagName,
+                $childName
+            );
+        } else {
+            if (!$name) {
+                throw new CompileException('Missing input name in ' . $node->getNotation());
+            }
+
+            $prefix = $writer->write(
+                '$_input = ' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+                . 'end($this->global->formsStack)[%0.word];'
+                . ' $_el = Nette\Utils\Html::el(%1.var)->setId($_input->getHtmlId() . \'-errors\')'
+                . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
+                . ' foreach($_input->getErrors() as $_e) $_el->create(%2.var)->setText($_e)',
+                $name,
+                $tagName,
+                $childName
+            );
+        }
 
         if ($node->prefix) {
             $node->openingCode = '<?php ' . $prefix . ' ?>';
