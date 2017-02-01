@@ -53,7 +53,7 @@ class NittroMacros extends MacroSet {
                 . ($name ? '$this->global->uiControl[%0.word];' : 'end($this->global->formsStack);')
                 . ' $_el = Nette\Utils\Html::el(%1.var)->setId($_form->getElementPrototype()->id . \'-errors\')'
                 . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-                . ' foreach($_form->getErrors() as $_e) $_el->create(%2.var)->setText($_e)',
+                . ' foreach($_form->getOwnErrors() as $_e) $_el->create(%2.var)->setText($_e)',
                 $name,
                 $tagName,
                 $childName
