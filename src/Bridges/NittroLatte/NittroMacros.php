@@ -60,7 +60,7 @@ class NittroMacros extends MacroSet {
         $attrCode = 'echo \' id="\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'flashes\')) . \'"\'';
 
         if ($node->tokenizer->isNext()) {
-            $attrCode .= '; echo \' data-flash-position="\' . %node.word . \'"\'';
+            $attrCode .= '; echo \' data-flash-placement="\' . %node.word . \'"\'';
         }
 
         $node->attrCode = $writer->write("<?php $attrCode ?>");
