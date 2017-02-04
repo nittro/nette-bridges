@@ -29,7 +29,7 @@ class NittroMacros extends MacroSet {
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
         $classes = 'nittro-flash nittro-flash-inline nittro-flash-%type%';
 
-        $prefix = '$_tmp = Nette\Utils\Html::el(%0.var)->setId(\'flash-\' . $this->global->uiControl->getParameterId(\'messages\'))->data(\'flash-inline\', true)'
+        $prefix = '$_tmp = Nette\Utils\Html::el(%0.var)->setId($this->global->uiControl->getParameterId(\'flashes\'))->data(\'flash-inline\', true)'
             . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
             . ' foreach($flashes as $_tmp2) $_tmp->create(%1.var)->setClass(str_replace(\'%type%\', $_tmp2->type, %2.var))->setText($_tmp2->message)';
 
@@ -57,7 +57,7 @@ class NittroMacros extends MacroSet {
             throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
         }
 
-        $attrCode = 'echo \' id="flash-\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'messages\')) . \'"\'';
+        $attrCode = 'echo \' id="\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'flashes\')) . \'"\'';
 
         if ($node->tokenizer->isNext()) {
             $attrCode .= '; echo \' data-flash-position="\' . %node.word . \'"\'';
