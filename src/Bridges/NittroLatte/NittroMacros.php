@@ -16,31 +16,35 @@ class NittroMacros extends MacroSet {
         $me = new static($compiler);
         $me->addMacro('snippetId', 'echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
         $me->addMacro('param', 'echo %escape($this->global->uiControl->getParameterId(%node.word))');
-        $me->addMacro('flashTarget', null, null, [$me, 'macroFlashTarget']);
+        $me->addMacro('flashes', [$me, 'validateMacro'], [$me, 'macroFlashes'], null, self::AUTO_EMPTY);
         $me->addMacro('dynamic', null, null, [$me, 'macroDynamic']);
-        $me->addMacro('errors', [$me, 'macroErrors'], [$me, 'macroErrorsEnd'], null, self::AUTO_EMPTY);
-        $me->addMacro('formErrors', [$me, 'macroErrors'], [$me, 'macroErrorsEnd'], null, self::AUTO_EMPTY);
+        $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
+        $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
     }
 
 
-    public function macroFlashTarget(MacroNode $node, PhpWriter $writer) {
-        if (!$node->prefix || $node->prefix !== MacroNode::PREFIX_NONE) {
-            throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
-        } else if (isset($node->htmlNode->attrs['id'])) {
-            throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
-        }
+    public function macroFlashes(MacroNode $node, PhpWriter $writer) {
+        $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
+        $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
+        $classes = 'nittro-flash nittro-flash-inline nittro-flash-%type%';
 
-        $attrCode = 'echo \' id="flash-\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'messages\')) . \'"\'';
+        $prefix = '$_tmp = Nette\Utils\Html::el(%0.var)->setId(\'flash-\' . $this->global->uiControl->getParameterId(\'messages\'))->data(\'flash-inline\', true)'
+            . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
+            . ' foreach($flashes as $_tmp2) $_tmp->create(%1.var)->setClass(str_replace(\'%type%\', $_tmp2->type, %2.var))->setText($_tmp2->message)';
 
-        if ($node->tokenizer->isNext()) {
-            $word = $node->tokenizer->fetchWord();
-
-            if ($word === 'inline') {
-                $attrCode .= '; echo \' data-flash-inline="true"\';';
+        if ($node->prefix) {
+            if (!empty($node->htmlNode->attrs['data-flash-classes'])) {
+                $classes .= ' ' . $node->htmlNode->attrs['data-flash-classes'];
             }
-        }
 
-        $node->attrCode = $writer->write("<?php $attrCode ?>");
+            $node->openingCode = '<?php ' . $writer->write($prefix, $tagName, $childName, $classes) . ' ?>';
+            $node->attrCode = '<?php echo $_tmp->attributes(); ?>';
+            $node->innerContent = '<?php echo $_tmp->getHtml() ?>';
+        } else {
+            $node->replaced = true;
+            $prefix .= '; echo $_tmp';
+            return $writer->write($prefix, $tagName, $childName, $classes);
+        }
     }
 
 
@@ -63,20 +67,6 @@ class NittroMacros extends MacroSet {
     }
 
     public function macroErrors(MacroNode $node, PhpWriter $writer) {
-        if ($node->modifiers) {
-            throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
-        } else if ($node->prefix) {
-            if ($node->prefix !== MacroNode::PREFIX_NONE) {
-                throw new CompileException('Unknown attribute ' . $node->getNotation() . ', use n:' . $node->name);
-            } else if ($node->innerContent) {
-                throw new CompileException('Unexpected content in ' . $node->getNotation() . ', tag must be empty');
-            } else if (isset($node->htmlNode->attrs['id'])) {
-                throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
-            }
-        }
-    }
-
-    public function macroErrorsEnd(MacroNode $node, PhpWriter $writer) {
         $name = $node->tokenizer->fetchWord();
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
@@ -116,6 +106,21 @@ class NittroMacros extends MacroSet {
         } else {
             $node->replaced = true;
             return $prefix . '; echo $_tmp2';
+        }
+    }
+
+
+    public function validateMacro(MacroNode $node) {
+        if ($node->modifiers) {
+            throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
+        } else if ($node->prefix) {
+            if ($node->prefix !== MacroNode::PREFIX_NONE) {
+                throw new CompileException('Unknown attribute ' . $node->getNotation() . ', use n:' . $node->name);
+            } else if ($node->innerContent) {
+                throw new CompileException('Unexpected content in ' . $node->getNotation() . ', tag must be empty');
+            } else if (isset($node->htmlNode->attrs['id'])) {
+                throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
+            }
         }
     }
 }
