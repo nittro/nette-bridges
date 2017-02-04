@@ -17,6 +17,7 @@ class NittroMacros extends MacroSet {
         $me->addMacro('snippetId', 'echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
         $me->addMacro('param', 'echo %escape($this->global->uiControl->getParameterId(%node.word))');
         $me->addMacro('flashes', [$me, 'validateMacro'], [$me, 'macroFlashes'], null, self::AUTO_EMPTY);
+        $me->addMacro('flashTarget', null, null, [$me, 'macroFlashTarget']);
         $me->addMacro('dynamic', null, null, [$me, 'macroDynamic']);
         $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
@@ -45,6 +46,24 @@ class NittroMacros extends MacroSet {
             $prefix .= '; echo $_tmp';
             return $writer->write($prefix, $tagName, $childName, $classes);
         }
+    }
+
+    public function macroFlashTarget(MacroNode $node, PhpWriter $writer) {
+        if ($node->modifiers) {
+            throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
+        } else if ($node->prefix !== MacroNode::PREFIX_NONE) {
+            throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
+        } else if (!empty($node->htmlNode->attrs['id'])) {
+            throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
+        }
+
+        $attrCode = 'echo \' id="flash-\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'messages\')) . \'"\'';
+
+        if ($node->tokenizer->isNext()) {
+            $attrCode .= '; echo \' data-flash-position="\' . %node.word . \'"\'';
+        }
+
+        $node->attrCode = $writer->write("<?php $attrCode ?>");
     }
 
 
@@ -115,7 +134,7 @@ class NittroMacros extends MacroSet {
             throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
         } else if ($node->prefix) {
             if ($node->prefix !== MacroNode::PREFIX_NONE) {
-                throw new CompileException('Unknown attribute ' . $node->getNotation() . ', use n:' . $node->name);
+                throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
             } else if ($node->innerContent) {
                 throw new CompileException('Unexpected content in ' . $node->getNotation() . ', tag must be empty');
             } else if (isset($node->htmlNode->attrs['id'])) {
