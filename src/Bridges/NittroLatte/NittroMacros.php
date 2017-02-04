@@ -30,7 +30,17 @@ class NittroMacros extends MacroSet {
             throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
         }
 
-        $node->attrCode = $writer->write('<?php echo \' id="flash-\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'messages\')) . \'"\' ?>');
+        $attrCode = 'echo \' id="flash-\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'messages\')) . \'"\'';
+
+        if ($node->tokenizer->isNext()) {
+            $word = $node->tokenizer->fetchWord();
+
+            if ($word === 'inline') {
+                $attrCode .= '; echo \' data-flash-inline="true"\';';
+            }
+        }
+
+        $node->attrCode = $writer->write("<?php $attrCode ?>");
     }
 
 
@@ -39,7 +49,7 @@ class NittroMacros extends MacroSet {
             throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
         }
 
-        $attrCode = 'echo \' data-dynamic-container="\' . htmlSpecialChars($this->global->snippetDriver->getHtmlId(%node.word)) . \'"\'';
+        $attrCode = 'echo \' data-dynamic-mask="\' . htmlSpecialChars($this->global->snippetDriver->getHtmlId(%node.word)) . \'"\'';
 
         if (!empty($node->htmlNode->attrs['class'])) {
             if (!preg_match('/(?:^|\s)nittro-snippet-container(?:\s|$)/', $node->htmlNode->attrs['class'])) {
