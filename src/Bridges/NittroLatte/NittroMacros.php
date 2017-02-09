@@ -96,7 +96,7 @@ class NittroMacros extends MacroSet {
                 . ($name ? '$this->global->uiControl[%0.word];' : 'end($this->global->formsStack);')
                 . ' $_tmp2 = Nette\Utils\Html::el(%1.var)->setId($_tmp->getElementPrototype()->id . \'-errors\')'
                 . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-                . ' foreach($_tmp->getOwnErrors() as $_e) $_tmp2->create(%2.var)->setText($_e)',
+                . ' foreach($_tmp->getOwnErrors() as $_e) $_tmp2->create(%2.var)->setClass(\'error\')->setText($_e)',
                 $name,
                 $tagName,
                 $childName
@@ -111,7 +111,7 @@ class NittroMacros extends MacroSet {
                 . 'end($this->global->formsStack)[%0.word];'
                 . ' $_tmp2 = Nette\Utils\Html::el(%1.var)->setId($_tmp->getHtmlId() . \'-errors\')'
                 . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-                . ' foreach($_tmp->getErrors() as $_e) $_tmp2->create(%2.var)->setText($_e)',
+                . ' foreach($_tmp->getErrors() as $_e) $_tmp2->create(%2.var)->setClass(\'error\')->setText($_e)',
                 $name,
                 $tagName,
                 $childName
