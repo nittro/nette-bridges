@@ -86,7 +86,8 @@ class NittroMacros extends MacroSet {
     }
 
     public function macroErrors(MacroNode $node, PhpWriter $writer) {
-        $name = $node->tokenizer->fetchWord();
+        $words = $node->tokenizer->fetchWords();
+        $name = array_shift($words);
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
 
@@ -109,10 +110,11 @@ class NittroMacros extends MacroSet {
             $prefix = $writer->write(
                 '$_tmp = ' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
                 . 'end($this->global->formsStack)[%0.word];'
-                . ' $_tmp2 = Nette\Utils\Html::el(%1.var)->setId($_tmp->getHtmlId() . \'-errors\')'
+                . ' $_tmp2 = Nette\Utils\Html::el(%2.var)->setId($_tmp->%1.raw . \'-errors\')'
                 . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-                . ' foreach($_tmp->getErrors() as $_e) $_tmp2->create(%2.var)->setClass(\'error\')->setText($_e)',
+                . ' foreach($_tmp->getErrors() as $_e) $_tmp2->create(%3.var)->setClass(\'error\')->setText($_e)',
                 $name,
+                $words ? 'getControlPart(' . implode(', ', array_map([$writer, 'formatWord'], $words)) . ')->getAttribute(\'id\')' : 'getHtmlId()',
                 $tagName,
                 $childName
             );
