@@ -52,6 +52,11 @@ trait PresenterUtils {
     abstract public function redirect($code, $destination = NULL, $args = []);
 
     /**
+     * @return bool
+     */
+    abstract public function hasFlashSession();
+
+    /**
      * @return SessionSection
      */
     abstract public function getFlashSession();
@@ -151,6 +156,8 @@ trait PresenterUtils {
      */
     public function exportFlashSession()
     {
-        return iterator_to_array($this->getFlashSession()->getIterator());
+        return $this->hasFlashSession()
+            ? iterator_to_array($this->getFlashSession()->getIterator())
+            : [];
     }
 }
