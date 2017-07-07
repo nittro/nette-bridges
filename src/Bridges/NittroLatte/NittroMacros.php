@@ -21,6 +21,7 @@ class NittroMacros extends MacroSet {
         $me->addMacro('dynamic', null, null, [$me, 'macroDynamic']);
         $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
+        $me->addMacro('inputId', [$me, 'macroInputId']);
     }
 
 
@@ -128,6 +129,20 @@ class NittroMacros extends MacroSet {
             $node->replaced = true;
             return $prefix . '; echo $_tmp2';
         }
+    }
+
+
+    public function macroInputId(MacroNode $node, PhpWriter $writer) {
+        $words = $node->tokenizer->fetchWords();
+        $name = array_shift($words);
+
+        return $writer->write(
+            '$_tmp = ' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+            . 'end($this->global->formsStack)[%0.word];'
+            . ' echo %escape($_tmp->%1.raw)',
+            $name,
+            $words ? 'getControlPart(' . implode(', ', array_map([$writer, 'formatWord'], $words)) . ')->getAttribute(\'id\')' : 'getHtmlId()'
+        );
     }
 
 
