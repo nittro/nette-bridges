@@ -95,11 +95,12 @@ trait PresenterUtils {
     }
 
     /**
+     * @param bool $force
      * @return $this
      */
-    public function redrawDefault()
+    public function redrawDefault($force = false)
     {
-        if ($this->redrawDefault && !$this->isControlInvalid()) {
+        if ($force || $this->redrawDefault && !$this->isControlInvalid()) {
             foreach ($this->defaultSnippets as $snippet) {
                 $this->redrawControl($snippet);
             }
@@ -148,6 +149,24 @@ trait PresenterUtils {
         return $this;
     }
 
+
+    /************* Forms *************/
+
+    /**
+     * @return $this
+     */
+    public function allowFormReset() {
+        $this->payload->allowReset = true;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disallowFormReset() {
+        $this->payload->allowReset = false;
+        return $this;
+    }
 
     /************* Flash messages *************/
 
