@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: danik
- * Date: 26/02/16
- * Time: 12:44
- */
+
+declare(strict_types=1);
 
 namespace Nittro\Bridges\NittroUI;
 use Nette\Application\UI;
@@ -35,7 +31,7 @@ abstract class Presenter extends UI\Presenter {
         }
     }
 
-    public function sendPayload()
+    public function sendPayload() : void
     {
         // Send flash messages in payload
         $this->payload->flashes = $this->exportFlashSession();

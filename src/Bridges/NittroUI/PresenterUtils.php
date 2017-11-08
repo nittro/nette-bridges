@@ -1,9 +1,10 @@
 <?php
 
-namespace Nittro\Bridges\NittroUI;
-use Nette\Http\SessionSection,
-    Nette\Application\AbortException;
+declare(strict_types=1);
 
+namespace Nittro\Bridges\NittroUI;
+
+use Nette\Http\SessionSection;
 
 
 trait PresenterUtils {
@@ -17,23 +18,16 @@ trait PresenterUtils {
     ];
 
 
-    /**
-     * @return bool
-     */
-    abstract public function isAjax();
+    abstract public function isAjax() : bool;
 
-    /**
-     * @param string $snippet
-     * @return bool
-     */
-    abstract public function isControlInvalid($snippet = NULL);
+    abstract public function isControlInvalid(string $snippet = NULL) : bool;
 
     /**
      * @param string $snippet
      * @param bool $redraw
      * @return void
      */
-    abstract public function redrawControl($snippet = NULL, $redraw = TRUE);
+    abstract public function redrawControl($snippet = NULL, bool $redraw = TRUE) : void;
 
 
     /**
@@ -41,7 +35,7 @@ trait PresenterUtils {
      * @param array $args
      * @return string
      */
-    abstract public function link($destination, $args = []);
+    abstract public function link(string $destination, $args = []) : string;
 
     /**
      * @param int $code
@@ -49,56 +43,35 @@ trait PresenterUtils {
      * @param array $args
      * @return void
      */
-    abstract public function redirect($code, $destination = NULL, $args = []);
+    abstract public function redirect($code, $destination = NULL, $args = []) : void;
 
-    /**
-     * @return bool
-     */
-    abstract public function hasFlashSession();
 
-    /**
-     * @return SessionSection
-     */
-    abstract public function getFlashSession();
+    abstract public function hasFlashSession() : bool;
+
+    abstract public function getFlashSession() : SessionSection;
 
 
 
     /************* Snippets *************/
 
-
-    /**
-     * @param bool $value
-     * @return $this
-     */
-    public function setRedrawDefault($value = true)
+    public function setRedrawDefault(bool $value = true) : self
     {
         $this->redrawDefault = $value;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function willRedrawDefault()
+    public function willRedrawDefault() : bool
     {
         return $this->redrawDefault;
     }
 
-    /**
-     * @param array $snippets
-     * @return $this
-     */
-    public function setDefaultSnippets(array $snippets)
+    public function setDefaultSnippets(array $snippets) : self
     {
         $this->defaultSnippets = $snippets;
         return $this;
     }
 
-    /**
-     * @param bool $force
-     * @return $this
-     */
-    public function redrawDefault($force = false)
+    public function redrawDefault(bool $force = false) : self
     {
         if ($force || $this->redrawDefault && !$this->isControlInvalid()) {
             foreach ($this->defaultSnippets as $snippet) {
@@ -114,13 +87,7 @@ trait PresenterUtils {
 
     /************* Redirects *************/
 
-    /**
-     * @param string $destination
-     * @param array $args
-     * @throws AbortException
-     * @return $this
-     */
-    public function postGet($destination, $args = [])
+    public function postGet(string $destination, $args = []) : self
     {
         if ($this->isAjax()) {
             $this->payload->postGet = true;
@@ -133,18 +100,14 @@ trait PresenterUtils {
 
     }
 
-    /**
-     * @return $this
-     */
-    public function allowAjax() {
+    public function allowAjax() : self
+    {
         $this->payload->allowAjax = true;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function disallowAjax() {
+    public function disallowAjax() : self
+    {
         $this->payload->allowAjax = false;
         return $this;
     }
@@ -152,28 +115,21 @@ trait PresenterUtils {
 
     /************* Forms *************/
 
-    /**
-     * @return $this
-     */
-    public function allowFormReset() {
+    public function allowFormReset() : self
+    {
         $this->payload->allowReset = true;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function disallowFormReset() {
+    public function disallowFormReset() : self
+    {
         $this->payload->allowReset = false;
         return $this;
     }
 
     /************* Flash messages *************/
 
-    /**
-     * @return array
-     */
-    public function exportFlashSession()
+    public function exportFlashSession() : array
     {
         return $this->hasFlashSession()
             ? iterator_to_array($this->getFlashSession()->getIterator())

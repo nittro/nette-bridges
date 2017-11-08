@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nittro\Bridges\NittroLatte;
 
 use Latte\Macros\MacroSet,
@@ -11,7 +13,7 @@ use Latte\Macros\MacroSet,
 
 class NittroMacros extends MacroSet {
 
-    public static function install(Compiler $compiler)
+    public static function install(Compiler $compiler) : void
     {
         $me = new static($compiler);
         $me->addMacro('snippetId', 'echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
@@ -25,7 +27,8 @@ class NittroMacros extends MacroSet {
     }
 
 
-    public function macroFlashes(MacroNode $node, PhpWriter $writer) {
+    public function macroFlashes(MacroNode $node, PhpWriter $writer) : ?string
+    {
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
         $classes = 'nittro-flash nittro-flash-inline nittro-flash-%type%';
@@ -42,6 +45,8 @@ class NittroMacros extends MacroSet {
             $node->openingCode = '<?php ' . $writer->write($prefix, $tagName, $childName, $classes) . ' ?>';
             $node->attrCode = '<?php echo $_tmp->attributes(); ?>';
             $node->innerContent = '<?php echo $_tmp->getHtml() ?>';
+
+            return null;
         } else {
             $node->replaced = true;
             $prefix .= '; echo $_tmp';
@@ -49,7 +54,8 @@ class NittroMacros extends MacroSet {
         }
     }
 
-    public function macroFlashTarget(MacroNode $node, PhpWriter $writer) {
+    public function macroFlashTarget(MacroNode $node, PhpWriter $writer) : void
+    {
         if ($node->modifiers) {
             throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
         } else if ($node->prefix !== MacroNode::PREFIX_NONE) {
@@ -68,7 +74,8 @@ class NittroMacros extends MacroSet {
     }
 
 
-    public function macroDynamic(MacroNode $node, PhpWriter $writer) {
+    public function macroDynamic(MacroNode $node, PhpWriter $writer) : void
+    {
         if (!$node->prefix || $node->prefix !== MacroNode::PREFIX_NONE) {
             throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
         }
@@ -86,7 +93,8 @@ class NittroMacros extends MacroSet {
         $node->attrCode = $writer->write("<?php $attrCode ?>");
     }
 
-    public function macroErrors(MacroNode $node, PhpWriter $writer) {
+    public function macroErrors(MacroNode $node, PhpWriter $writer) : ?string
+    {
         $words = $node->tokenizer->fetchWords();
         $name = array_shift($words);
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
@@ -125,6 +133,8 @@ class NittroMacros extends MacroSet {
             $node->openingCode = '<?php ' . $prefix . ' ?>';
             $node->attrCode = '<?php echo $_tmp2->attributes(); ?>';
             $node->innerContent = '<?php echo $_tmp2->getHtml() ?>';
+
+            return null;
         } else {
             $node->replaced = true;
             return $prefix . '; echo $_tmp2';
@@ -132,7 +142,8 @@ class NittroMacros extends MacroSet {
     }
 
 
-    public function macroInputId(MacroNode $node, PhpWriter $writer) {
+    public function macroInputId(MacroNode $node, PhpWriter $writer) : string
+    {
         $words = $node->tokenizer->fetchWords();
         $name = array_shift($words);
 
@@ -146,7 +157,8 @@ class NittroMacros extends MacroSet {
     }
 
 
-    public function validateMacro(MacroNode $node) {
+    public function validateMacro(MacroNode $node) : void
+    {
         if ($node->modifiers) {
             throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
         } else if ($node->prefix) {
