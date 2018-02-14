@@ -7,7 +7,6 @@ use Latte\Macros\MacroSet,
     Latte\CompileException,
     Latte\MacroNode,
     Latte\PhpWriter;
-use Latte\MacroTokens;
 
 
 class NittroMacros extends MacroSet {
@@ -23,8 +22,6 @@ class NittroMacros extends MacroSet {
         $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('inputId', [$me, 'macroInputId']);
-        $me->addMacro('dialog', null, null, [$me, 'macroDialog']);
-        $me->addMacro('formDialog', null, null, [$me, 'macroDialog']);
     }
 
 
@@ -146,49 +143,6 @@ class NittroMacros extends MacroSet {
             $name,
             $words ? 'getControlPart(' . implode(', ', array_map([$writer, 'formatWord'], $words)) . ')->getAttribute(\'id\')' : 'getHtmlId()'
         );
-    }
-
-    public function macroDialog(MacroNode $node, PhpWriter $writer) {
-        if (!$node->prefix || $node->prefix !== MacroNode::PREFIX_NONE) {
-            throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
-        }
-
-        $form = $node->name === 'formDialog';
-        $name = $node->tokenizer->fetchWord();
-        $snippet = $node->tokenizer->fetchWord();
-
-        if (!$name || !$snippet) {
-            throw new CompileException('Invalid ' . $node->getNotation() . ', at least two parameters are required');
-        }
-
-        if ($form || $node->tokenizer->isNext()) {
-            $arr = [
-                '\'name\' => %0.word',
-                '\'source\' => $this->global->snippetDriver->getHtmlId(%1.word)',
-            ];
-
-            if ($form) {
-                $arr[] = "'form' => true";
-            }
-
-            if ($node->tokenizer->isNext()) {
-                $arr[] = "'options' => %node.array";
-            }
-
-            $attrCode = $writer->write(
-                'echo \' data-dialog="\' . %escape(json_encode([' . implode(', ', $arr) . '])) . \'"\'',
-                $name,
-                $snippet
-            );
-        } else {
-            $attrCode = $writer->write(
-                'echo \' data-dialog="\' . %escape(%0.word) . \', \' . %escape($this->global->snippetDriver->getHtmlId(%1.word)) . \'"\'',
-                $name,
-                $snippet
-            );
-        }
-
-        $node->attrCode = "<?php $attrCode ?>";
     }
 
 

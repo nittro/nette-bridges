@@ -85,24 +85,26 @@ trait ComponentUtils {
 
     /**
      * @param string $name
-     * @param string $snippet
-     * @param bool $form
+     * @param string $source
+     * @param string $type
      * @param array $options
      * @return $this
      */
-    public function openInDialog($name, $snippet, $form = false, array $options = null)
+    public function openInDialog($name, $source, $type = null, array $options = null)
     {
-        $snippet = $this->getSnippetId($snippet);
+        if (!$type || $type === 'form') {
+            $source = $this->getSnippetId($source);
+        }
 
-        if (!$form && !$options) {
-            $this->getPresenter()->payload->dialogs[$name] = $snippet;
+        if (!$options) {
+            $this->getPresenter()->payload->dialogs[$name] = ($type ? $type . ':' : '') . $source;
         } else {
             $def = [
-                'source' => $snippet,
+                'source' => $source,
             ];
 
-            if ($form) {
-                $def['form'] = true;
+            if ($type) {
+                $def['type'] = $type;
             }
 
             if ($options) {
