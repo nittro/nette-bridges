@@ -8,7 +8,7 @@
 
         <!-- Dynamic snippets -->
         <!-- The n:dynamic macro is essentially the same as writing the following: -->
-        <!-- <ul n:snippet="list" class="snippet-container" data-dynamic-mask="{snippetId article-\d+}"> -->
+        <!-- <section n:snippet="articles" class="snippet-container" data-dynamic-mask="{snippetId article-\d+}"> -->
         <section n:snippet="articles" n:dynamic="article-\d+">
             {foreach $items as $item}
                 <article n:snippet="article-$item->id">{$item->title}</article>
