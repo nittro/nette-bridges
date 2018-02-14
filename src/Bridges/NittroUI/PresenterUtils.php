@@ -1,9 +1,8 @@
 <?php
 
 namespace Nittro\Bridges\NittroUI;
-use Nette\Http\SessionSection,
-    Nette\Application\AbortException;
 
+use Nette\Http\SessionSection;
 
 
 trait PresenterUtils {
@@ -18,11 +17,6 @@ trait PresenterUtils {
 
 
     /**
-     * @return bool
-     */
-    abstract public function isAjax();
-
-    /**
      * @param string $snippet
      * @return bool
      */
@@ -35,22 +29,6 @@ trait PresenterUtils {
      */
     abstract public function redrawControl($snippet = NULL, $redraw = TRUE);
 
-
-    /**
-     * @param string $destination
-     * @param array $args
-     * @return string
-     */
-    abstract public function link($destination, $args = []);
-
-    /**
-     * @param int $code
-     * @param string $destination
-     * @param array $args
-     * @return void
-     */
-    abstract public function redirect($code, $destination = NULL, $args = []);
-
     /**
      * @return bool
      */
@@ -60,6 +38,8 @@ trait PresenterUtils {
      * @return SessionSection
      */
     abstract public function getFlashSession();
+
+
 
 
 
@@ -110,63 +90,6 @@ trait PresenterUtils {
 
     }
 
-
-
-    /************* Redirects *************/
-
-    /**
-     * @param string $destination
-     * @param array $args
-     * @throws AbortException
-     * @return $this
-     */
-    public function postGet($destination, $args = [])
-    {
-        if ($this->isAjax()) {
-            $this->payload->postGet = true;
-            $this->payload->url = call_user_func_array([$this, 'link'], func_get_args());
-        } else {
-            call_user_func_array([$this, 'redirect'], func_get_args());
-        }
-
-        return $this;
-
-    }
-
-    /**
-     * @return $this
-     */
-    public function allowAjax() {
-        $this->payload->allowAjax = true;
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disallowAjax() {
-        $this->payload->allowAjax = false;
-        return $this;
-    }
-
-
-    /************* Forms *************/
-
-    /**
-     * @return $this
-     */
-    public function allowFormReset() {
-        $this->payload->allowReset = true;
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disallowFormReset() {
-        $this->payload->allowReset = false;
-        return $this;
-    }
 
     /************* Flash messages *************/
 
