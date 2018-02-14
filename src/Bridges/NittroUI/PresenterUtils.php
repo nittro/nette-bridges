@@ -84,49 +84,6 @@ trait PresenterUtils {
     }
 
 
-
-    /************* Redirects *************/
-
-    public function postGet(string $destination, $args = []) : self
-    {
-        if ($this->isAjax()) {
-            $this->payload->postGet = true;
-            $this->payload->url = call_user_func_array([$this, 'link'], func_get_args());
-        } else {
-            call_user_func_array([$this, 'redirect'], func_get_args());
-        }
-
-        return $this;
-
-    }
-
-    public function allowAjax() : self
-    {
-        $this->payload->allowAjax = true;
-        return $this;
-    }
-
-    public function disallowAjax() : self
-    {
-        $this->payload->allowAjax = false;
-        return $this;
-    }
-
-
-    /************* Forms *************/
-
-    public function allowFormReset() : self
-    {
-        $this->payload->allowReset = true;
-        return $this;
-    }
-
-    public function disallowFormReset() : self
-    {
-        $this->payload->allowReset = false;
-        return $this;
-    }
-
     /************* Flash messages *************/
 
     public function exportFlashSession() : array
