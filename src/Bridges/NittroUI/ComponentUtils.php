@@ -60,9 +60,28 @@ trait ComponentUtils {
 
     /************* Dialogs *************/
 
-    public function openInDialog(string $snippet, string $name) : self
+    public function openInDialog(string $name, string $snippet, bool $form = false, ?array $options = null) : self
     {
-        $this->getPresenter()->payload->dialogs[$name] = $this->getSnippetId($snippet);
+        $snippet = $this->getSnippetId($snippet);
+
+        if (!$form && !$options) {
+            $this->getPresenter()->payload->dialogs[$name] = $snippet;
+        } else {
+            $def = [
+                'source' => $snippet,
+            ];
+
+            if ($form) {
+                $def['form'] = true;
+            }
+
+            if ($options) {
+                $def['options'] = $options;
+            }
+
+            $this->getPresenter()->payload->dialogs[$name] = $def;
+        }
+
         return $this;
     }
 
