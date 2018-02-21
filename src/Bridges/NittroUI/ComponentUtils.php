@@ -17,7 +17,7 @@ trait ComponentUtils {
      * @param string $name
      * @return string
      */
-    abstract public function getSnippetId($name);
+    abstract public function getSnippetId($name = null);
 
 
     /************* Redirects *************/
