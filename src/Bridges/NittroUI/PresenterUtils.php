@@ -6,6 +6,8 @@ use Nette\Http\SessionSection;
 
 
 trait PresenterUtils {
+    use ComponentUtils;
+
 
     /** @var bool */
     private $redrawDefault = true;

@@ -6,7 +6,7 @@ use Nette\Application\UI;
 
 
 abstract class Presenter extends UI\Presenter {
-    use ComponentUtils, PresenterUtils;
+    use PresenterUtils;
 
 
     protected function startup()
