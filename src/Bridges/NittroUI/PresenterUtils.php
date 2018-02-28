@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nittro\Bridges\NittroUI;
 
 use Nette\Http\SessionSection;
+use Nette\Application\UI\Presenter;
 
 
 trait PresenterUtils {
@@ -19,6 +20,8 @@ trait PresenterUtils {
         'content'
     ];
 
+
+    abstract public function getPresenter(bool $throw = TRUE) : Presenter;
 
     abstract public function isAjax() : bool;
 
