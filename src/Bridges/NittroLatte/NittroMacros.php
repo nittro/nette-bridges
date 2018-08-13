@@ -32,7 +32,9 @@ class NittroMacros extends MacroSet {
 
         $prefix = '$_tmp = Nette\Utils\Html::el(%0.var)->setId($this->global->uiControl->getParameterId(\'flashes\'))->data(\'flash-inline\', true)'
             . ($node->tokenizer->isNext() ? '->addAttributes(%node.array);' : ';')
-            . ' foreach($flashes as $_tmp2) $_tmp->create(%1.var)->setClass(str_replace(\'%type%\', $_tmp2->type, %2.var))->setText($_tmp2->message)';
+            . ' foreach($flashes as $_tmp2) $_tmp->create(%1.var)->setClass(str_replace(\'%type%\', $_tmp2->type, %2.var))'
+            . ($node->prefix && !empty($node->htmlNode->attrs['data-flash-rich']) ? '->setHtml' : '->setText')
+            . '($_tmp2->message)';
 
         if ($node->prefix) {
             if (!empty($node->htmlNode->attrs['data-flash-classes'])) {
