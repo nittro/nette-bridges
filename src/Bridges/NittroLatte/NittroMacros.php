@@ -26,7 +26,6 @@ class NittroMacros extends MacroSet {
         $me->addMacro('inputId', [$me, 'macroInputId']);
     }
 
-
     public function macroFlashes(MacroNode $node, PhpWriter $writer) : ?string
     {
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
