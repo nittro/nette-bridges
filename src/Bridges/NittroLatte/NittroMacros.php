@@ -22,6 +22,8 @@ class NittroMacros extends MacroSet {
         $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro('inputId', [$me, 'macroInputId']);
+        $me->addMacro('dialog', null, null, [$me, 'macroDialog']);
+        $me->addMacro('dialog.form', null, null, [$me, 'macroDialog']);
     }
 
 
@@ -144,6 +146,26 @@ class NittroMacros extends MacroSet {
             . ' echo %escape($_tmp->%1.raw)',
             $name,
             $words ? 'getControlPart(' . implode(', ', array_map([$writer, 'formatWord'], $words)) . ')->getAttribute(\'id\')' : 'getHtmlId()'
+        );
+    }
+
+    public function macroDialog(MacroNode $node, PhpWriter $writer)
+    {
+        if ($node->modifiers) {
+            throw new CompileException('Modifiers are not allowed in ' . $node->getNotation());
+        } else if ($node->prefix !== MacroNode::PREFIX_NONE) {
+            throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
+        }
+
+        $type = preg_replace('/^dialog\.?/', '', $node->name) ?: null;
+        $name = $node->tokenizer->fetchWord();
+        $source = $node->tokenizer->fetchWord();
+
+        $node->attrCode = $writer->write(
+            ' data-dialog="<?php echo %escape(json_encode([\'type\' => %0.var, \'name\' => %1.raw, \'source\' => $this->global->snippetDriver->getHtmlId(%2.var), \'options\' => %node.array])) ?>" ',
+            $type,
+            $name[0] === '@' ? var_export(substr($name, 1), true) : $writer->write('$this->global->snippetDriver->getHtmlId(%0.var)', $name),
+            $source
         );
     }
 
