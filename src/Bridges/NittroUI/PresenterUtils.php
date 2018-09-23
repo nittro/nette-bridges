@@ -85,7 +85,6 @@ trait PresenterUtils {
         }
 
         return $this;
-
     }
 
 
