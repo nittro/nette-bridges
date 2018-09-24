@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "nette/application": "^3.0",
+        "nette/di": "^3.0",
         "latte/latte": "^3.0"
     },
     "minimum-stability": "dev",
