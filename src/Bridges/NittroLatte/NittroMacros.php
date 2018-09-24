@@ -203,30 +203,36 @@ class NittroMacros extends MacroSet {
 
         $type = preg_replace('/^dialog\.?/', '', $node->name) ?: null;
         @list($name, $source) = $node->tokenizer->fetchWords();
-
         $args = [];
 
-        if ($type) {
-            $args[] = $writer->write("'type' => %0.word", $type);
+        if (($name === '@current' || $name === '@self') && $source === 'keep') {
+            $args[] = "'" . ltrim($name, '@') . "' => true,";
+            @list($name, $source) = $node->tokenizer->fetchWords();
         }
 
-        $args[] = $writer->write("'name' => \$this->global->nittro->getDialogId(%0.word)", $name);
+        $args[] = $writer->write("\$this->global->nittro->getDialogId(%0.word) => [", $name);
+
+        if ($type) {
+            $args[] = $writer->write("'type' => %0.word,", $type);
+        }
 
         if (!$source && $node->name !== 'dialog.iframe') {
             $source = ltrim($name, '@');
         }
 
         if ($source) {
-            $args[] = $writer->write("'source' => \$this->global->snippetDriver->getHtmlId(%0.word)", $source);
+            $args[] = $writer->write("'source' => \$this->global->snippetDriver->getHtmlId(%0.word),", $source);
         }
 
         if ($node->tokenizer->isNext()) {
-            $args[] = $writer->write("'options' => %node.array");
+            $args[] = $writer->write("'options' => %node.array,");
         }
+
+        $args[] = ']';
 
         $node->attrCode = $writer->write(
             ' data-dialog="<?php echo %escape(json_encode([%0.raw])) ?>"',
-            implode(', ', $args)
+            implode(' ', $args)
         );
     }
 
