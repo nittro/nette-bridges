@@ -30,9 +30,12 @@ class NittroMacros extends MacroSet {
         $me->addMacro($prefix . 'formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
         $me->addMacro($prefix . 'inputId', [$me, 'macroInputId']);
         $me->addMacro($prefix . 'input.id', [$me, 'macroInputId']);
+        $me->addMacro($prefix . 'form.id', [$me, 'macroInputId']);
         $me->addMacro($prefix . 'dialog', null, null, [$me, 'macroDialog']);
         $me->addMacro($prefix . 'dialog.form', null, null, [$me, 'macroDialog']);
         $me->addMacro($prefix . 'dialog.iframe', null, null, [$me, 'macroDialog']);
+        $me->addMacro($prefix . 'dialog.self', null, null, [$me, 'macroDialog']);
+        $me->addMacro($prefix . 'dialog.current', null, null, [$me, 'macroDialog']);
     }
 
 
@@ -172,13 +175,33 @@ class NittroMacros extends MacroSet {
         }
 
         $words = $node->tokenizer->fetchWords();
-        $name = explode('-', array_shift($words), 2);
+        $name = array_shift($words);
+
+        if ($node->name === 'form.id') {
+            return $writer->write(
+                'echo %escape(%0.raw->getElementPrototype()->id)',
+                $name ? $writer->write(
+                    '(' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+                    . '$this->global->uiControl->getComponent(%0.word))',
+                    $name
+                ) : 'end($this->global->formsStack)'
+            );
+        } else if (strpos($name, '-') !== false) {
+            $prefix = $writer->write(
+                '$this->global->uiControl->getComponent(%0.word)',
+                $name
+            );
+        } else {
+            $prefix = $writer->write(
+                '(' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+                . 'end($this->global->formsStack)[%0.word])',
+                $name
+            );
+        }
 
         return $writer->write(
-            '$_tmp = ' . ($name[0][0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
-            . 'end($this->global->formsStack)[%0.word];'
-            . ' echo %escape($_tmp->%1.raw)',
-            $name,
+            'echo %escape(%0.raw->%1.raw)',
+            $prefix,
             $words ? 'getControlPart(' . implode(', ', array_map([$writer, 'formatWord'], $words)) . ')->getAttribute(\'id\')' : 'getHtmlId()'
         );
     }
@@ -192,14 +215,37 @@ class NittroMacros extends MacroSet {
         }
 
         $type = preg_replace('/^dialog\.?/', '', $node->name) ?: null;
-        $name = $node->tokenizer->fetchWord();
-        $source = $node->tokenizer->fetchWord();
+        @list($name, $source) = $node->tokenizer->fetchWords();
+
+        $args = [];
+
+        if ($type) {
+            $args[] = $writer->write("'type' => %0.var", $type);
+        }
+
+        if ($type !== 'self' && $type !== 'current') {
+            if ($name[0] === '@') {
+                $args[] = $writer->write("'name' => %0.var", substr($name, 1));
+            } else {
+                $args[] = $writer->write("'name' => \$this->global->nittro->getDialogId(%0.var)", $name);
+            }
+        }
+
+        if (!$source && $node->name !== 'dialog.iframe') {
+            $source = ltrim($name, '@');
+        }
+
+        if ($source) {
+            $args[] = $writer->write("'source' => \$this->global->snippetDriver->getHtmlId(%0.var)", $source);
+        }
+
+        if ($node->tokenizer->isNext()) {
+            $args[] = $writer->write("'options' => %node.array");
+        }
 
         $node->attrCode = $writer->write(
-            ' data-dialog="<?php echo %escape(json_encode([\'type\' => %0.var, \'name\' => %1.raw, \'source\' => $this->global->snippetDriver->getHtmlId(%2.var), \'options\' => %node.array])) ?>" ',
-            $type,
-            $name[0] === '@' ? var_export(substr($name, 1), true) : $writer->write('$this->global->snippetDriver->getHtmlId(%0.var)', $name),
-            $source
+            ' data-dialog="<?php echo %escape(json_encode([%0.raw])) ?>"',
+            implode(', ', $args)
         );
     }
 
