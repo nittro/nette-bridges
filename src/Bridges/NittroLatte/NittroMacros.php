@@ -34,8 +34,6 @@ class NittroMacros extends MacroSet {
         $me->addMacro($prefix . 'dialog', null, null, [$me, 'macroDialog']);
         $me->addMacro($prefix . 'dialog.form', null, null, [$me, 'macroDialog']);
         $me->addMacro($prefix . 'dialog.iframe', null, null, [$me, 'macroDialog']);
-        $me->addMacro($prefix . 'dialog.self', null, null, [$me, 'macroDialog']);
-        $me->addMacro($prefix . 'dialog.current', null, null, [$me, 'macroDialog']);
     }
 
 
@@ -220,23 +218,17 @@ class NittroMacros extends MacroSet {
         $args = [];
 
         if ($type) {
-            $args[] = $writer->write("'type' => %0.var", $type);
+            $args[] = $writer->write("'type' => %0.word", $type);
         }
 
-        if ($type !== 'self' && $type !== 'current') {
-            if ($name[0] === '@') {
-                $args[] = $writer->write("'name' => %0.var", substr($name, 1));
-            } else {
-                $args[] = $writer->write("'name' => \$this->global->nittro->getDialogId(%0.var)", $name);
-            }
-        }
+        $args[] = $writer->write("'name' => \$this->global->nittro->getDialogId(%0.word)", $name);
 
         if (!$source && $node->name !== 'dialog.iframe') {
             $source = ltrim($name, '@');
         }
 
         if ($source) {
-            $args[] = $writer->write("'source' => \$this->global->snippetDriver->getHtmlId(%0.var)", $source);
+            $args[] = $writer->write("'source' => \$this->global->snippetDriver->getHtmlId(%0.word)", $source);
         }
 
         if ($node->tokenizer->isNext()) {

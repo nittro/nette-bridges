@@ -6,6 +6,7 @@ namespace Nittro\Bridges\NittroLatte;
 
 use Latte\Runtime\Template;
 use Nette\Application\UI\Component;
+use Nittro\Bridges\NittroUI\Helpers;
 
 
 class NittroRuntime {
@@ -29,7 +30,7 @@ class NittroRuntime {
 
 
     public function getDialogId(string $name) : string {
-        return 'dlg-' . ($this->control ? $this->control->getUniqueId() : '') . '-' . $name;
+        return Helpers::formatDialogId($name, $this->control);
     }
 
 }

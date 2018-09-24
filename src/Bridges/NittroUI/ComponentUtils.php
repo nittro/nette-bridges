@@ -67,7 +67,7 @@ trait ComponentUtils {
         }
 
         if (!$options) {
-            $this->getPresenter()->payload->dialogs[$name] = ($type ? $type . ':' : '') . $source;
+            $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = ($type ? $type . ':' : '') . $source;
         } else {
             $def = [
                 'source' => $source,
@@ -81,7 +81,7 @@ trait ComponentUtils {
                 $def['options'] = $options;
             }
 
-            $this->getPresenter()->payload->dialogs[$name] = $def;
+            $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = $def;
         }
 
         return $this;
@@ -89,8 +89,17 @@ trait ComponentUtils {
 
     public function closeDialog(string $name) : self
     {
-        $this->getPresenter()->payload->dialogs[$name] = false;
+        $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = false;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getDialogId(string $name) : string
+    {
+        return Helpers::formatDialogId($name, $this);
     }
 
 }
