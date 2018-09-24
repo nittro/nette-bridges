@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Nittro\Bridges\NittroDI;
 
 use Nette\Bridges\ApplicationLatte\ILatteFactory;

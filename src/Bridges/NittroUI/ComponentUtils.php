@@ -19,6 +19,11 @@ trait ComponentUtils {
      */
     abstract public function getSnippetId($name = null);
 
+    /**
+     * @return string
+     */
+    abstract public function getUniqueId();
+
 
     /************* Redirects *************/
 
@@ -97,7 +102,7 @@ trait ComponentUtils {
         }
 
         if (!$options) {
-            $this->getPresenter()->payload->dialogs[$name] = ($type ? $type . ':' : '') . $source;
+            $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = ($type ? $type . ':' : '') . $source;
         } else {
             $def = [
                 'source' => $source,
@@ -111,7 +116,7 @@ trait ComponentUtils {
                 $def['options'] = $options;
             }
 
-            $this->getPresenter()->payload->dialogs[$name] = $def;
+            $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = $def;
         }
 
         return $this;
@@ -123,8 +128,17 @@ trait ComponentUtils {
      */
     public function closeDialog($name)
     {
-        $this->getPresenter()->payload->dialogs[$name] = false;
+        $this->getPresenter()->payload->dialogs[$this->getDialogId($name)] = false;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getDialogId($name)
+    {
+        return Helpers::formatDialogId($name, $this);
     }
 
 }

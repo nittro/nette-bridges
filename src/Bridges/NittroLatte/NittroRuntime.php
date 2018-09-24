@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Nittro\Bridges\NittroLatte;
 
 use Latte\Runtime\Template;
 use Nette\Application\UI\Component;
+use Nittro\Bridges\NittroUI\Helpers;
 
 
 class NittroRuntime {
@@ -14,7 +13,7 @@ class NittroRuntime {
     private $control;
 
 
-    public static function initialize(Template $template) : void {
+    public static function initialize(Template $template) {
         if (
             isset($template->global->uiControl) && isset($template->global->nittro)
             && $template->global->uiControl instanceof Component && $template->global->nittro instanceof NittroRuntime
@@ -23,13 +22,13 @@ class NittroRuntime {
         }
     }
 
-    public static function deprecated(string $old, string $new) : void {
+    public static function deprecated($old, $new) {
         trigger_error(sprintf('The %s macro is deprecated, please use %s', $old, $old[0] === '{' ? '{' . $new . '}' : "n:$new"), E_USER_DEPRECATED);
     }
 
 
-    public function getDialogId(string $name) : string {
-        return 'dlg-' . ($this->control ? $this->control->getUniqueId() : '') . '-' . $name;
+    public function getDialogId($name) {
+        return Helpers::formatDialogId($name, $this->control);
     }
 
 }
