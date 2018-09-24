@@ -11,20 +11,33 @@ use Latte\Macros\MacroSet,
 
 class NittroMacros extends MacroSet {
 
-    public static function install(Compiler $compiler)
+    public static function install(Compiler $compiler, $noconflict = false)
     {
         $me = new static($compiler);
-        $me->addMacro('snippetId', 'echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
-        $me->addMacro('param', 'echo %escape($this->global->uiControl->getParameterId(%node.word))');
-        $me->addMacro('flashes', [$me, 'validateMacro'], [$me, 'macroFlashes'], null, self::AUTO_EMPTY);
-        $me->addMacro('flashTarget', null, null, [$me, 'macroFlashTarget']);
-        $me->addMacro('dynamic', null, null, [$me, 'macroDynamic']);
-        $me->addMacro('errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
-        $me->addMacro('formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
-        $me->addMacro('inputId', [$me, 'macroInputId']);
-        $me->addMacro('dialog', null, null, [$me, 'macroDialog']);
-        $me->addMacro('dialog.form', null, null, [$me, 'macroDialog']);
+        $prefix = $noconflict ? 'ntr.' : '';
+
+        $me->addMacro($prefix . 'snippetId', NittroRuntime::class . '::deprecated(\'{snippetId}\', \'snippet.id\'); echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
+        $me->addMacro($prefix . 'snippet.id', 'echo %escape($this->global->snippetDriver->getHtmlId(%node.word))');
+        $me->addMacro($prefix . 'param', 'echo %escape($this->global->uiControl->getParameterId(%node.word))');
+        $me->addMacro($prefix . 'flashes', [$me, 'validateMacro'], [$me, 'macroFlashes'], null, self::AUTO_EMPTY);
+        $me->addMacro($prefix . 'flashes.target', null, null, [$me, 'macroFlashTarget']);
+        $me->addMacro($prefix . 'flashTarget', null, null, [$me, 'macroFlashTarget']);
+        $me->addMacro($prefix . 'dynamic', null, null, [$me, 'macroDynamic']);
+        $me->addMacro($prefix . 'errors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
+        $me->addMacro($prefix . 'errors.form', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
+        $me->addMacro($prefix . 'formErrors', [$me, 'validateMacro'], [$me, 'macroErrors'], null, self::AUTO_EMPTY);
+        $me->addMacro($prefix . 'inputId', [$me, 'macroInputId']);
+        $me->addMacro($prefix . 'input.id', [$me, 'macroInputId']);
+        $me->addMacro($prefix . 'dialog', null, null, [$me, 'macroDialog']);
+        $me->addMacro($prefix . 'dialog.form', null, null, [$me, 'macroDialog']);
+        $me->addMacro($prefix . 'dialog.iframe', null, null, [$me, 'macroDialog']);
     }
+
+
+    public function finalize() {
+        return [NittroRuntime::class . '::initialize($this);'];
+    }
+
 
 
     public function macroFlashes(MacroNode $node, PhpWriter $writer) {
@@ -60,6 +73,8 @@ class NittroMacros extends MacroSet {
             throw new CompileException('Unknown macro ' . $node->getNotation() . ', did you mean n:' . $node->name . '?');
         } else if (!empty($node->htmlNode->attrs['id'])) {
             throw new CompileException('Cannot combine HTML attribute id with ' . $node->getNotation());
+        } else if ($node->getNotation() === 'flashTarget') {
+            NittroRuntime::deprecated($node->getNotation(), 'flashes.target');
         }
 
         $attrCode = 'echo \' id="\' . htmlSpecialChars($this->global->uiControl->getParameterId(\'flashes\')) . \'"\'';
@@ -91,12 +106,16 @@ class NittroMacros extends MacroSet {
     }
 
     public function macroErrors(MacroNode $node, PhpWriter $writer) {
+        if ($node->getNotation() === 'formErrors') {
+            NittroRuntime::deprecated($node->getNotation(), 'errors.form');
+        }
+
         $words = $node->tokenizer->fetchWords();
         $name = array_shift($words);
         $tagName = $node->prefix ? strtolower($node->htmlNode->name) : 'ul';
         $childName = in_array($tagName, ['ul', 'ol'], true) ? 'li' : 'p';
 
-        if ($node->name === 'formErrors') {
+        if ($node->name === 'errors.form' || $node->name === 'formErrors') {
             $prefix = $writer->write(
                 '$_tmp = ' . ($name && $name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
                 . ($name ? '$this->global->uiControl[%0.word];' : 'end($this->global->formsStack);')
@@ -137,11 +156,15 @@ class NittroMacros extends MacroSet {
 
 
     public function macroInputId(MacroNode $node, PhpWriter $writer) {
+        if ($node->getNotation() === 'inputId') {
+            NittroRuntime::deprecated($node->getNotation(), 'input.id');
+        }
+
         $words = $node->tokenizer->fetchWords();
-        $name = array_shift($words);
+        $name = explode('-', array_shift($words), 2);
 
         return $writer->write(
-            '$_tmp = ' . ($name[0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
+            '$_tmp = ' . ($name[0][0] === '$' ? 'is_object(%0.word) ? %0.word : ' : '')
             . 'end($this->global->formsStack)[%0.word];'
             . ' echo %escape($_tmp->%1.raw)',
             $name,
