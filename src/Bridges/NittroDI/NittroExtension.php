@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nittro\Bridges\NittroDI;
 
-use Latte\Engine;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Statement;
 use Nittro\Bridges\NittroLatte\NittroMacros;
@@ -27,9 +27,9 @@ class NittroExtension extends CompilerExtension {
         $builder = $this->getContainerBuilder();
         $config = $this->getConfig();
 
-        if ($latte = $builder->getByType(Engine::class)) {
+        if ($latte = $builder->getByType(ILatteFactory::class)) {
             $builder->getDefinition($latte)
-                ->addSetup('addProvider', [ new Statement(NittroRuntime::class) ])
+                ->addSetup('addProvider', [ 'nittro', new Statement(NittroRuntime::class) ])
                 ->addSetup(
                     '?->onCompile[] = function ($engine) { ' . NittroMacros::class . '::install($engine->getCompiler(), ?); }', [
                     '@self',
