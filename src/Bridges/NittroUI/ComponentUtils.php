@@ -9,7 +9,7 @@ use Nette\Application\UI\Presenter;
 
 trait ComponentUtils {
 
-    abstract public function getPresenter(bool $throw = TRUE) : ?Presenter;
+    abstract public function getPresenter() : ?Presenter;
 
     abstract public function getSnippetId(string $name) : string;
 

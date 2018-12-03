@@ -21,7 +21,7 @@ trait PresenterUtils {
     ];
 
 
-    abstract public function getPresenter(bool $throw = TRUE) : Presenter;
+    abstract public function getPresenter() : Presenter;
 
     abstract public function isAjax() : bool;
 
@@ -32,7 +32,7 @@ trait PresenterUtils {
      * @param bool $redraw
      * @return void
      */
-    abstract public function redrawControl($snippet = NULL, bool $redraw = TRUE) : void;
+    abstract public function redrawControl(?string $snippet = NULL, bool $redraw = TRUE) : void;
 
 
     /**

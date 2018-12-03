@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "6a9c9b95b98b4838bd89920caad63d20",
@@ -9,22 +9,22 @@
     "packages-dev": [
         {
             "name": "latte/latte",
-            "version": "v3.0.0-alpha1",
+            "version": "v3.0.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/latte.git",
-                "reference": "ee18dfc1e2ff07ba304b22370c2d25c6b708d1c1"
+                "reference": "c728e184820d7945d1981ae347b75b0b1156d11b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/latte/zipball/ee18dfc1e2ff07ba304b22370c2d25c6b708d1c1",
-                "reference": "ee18dfc1e2ff07ba304b22370c2d25c6b708d1c1",
+                "url": "https://api.github.com/repos/nette/latte/zipball/c728e184820d7945d1981ae347b75b0b1156d11b",
+                "reference": "c728e184820d7945d1981ae347b75b0b1156d11b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=7.0"
+                "php": ">=7.1"
             },
             "conflict": {
                 "nette/application": "<2.4.1"
@@ -36,7 +36,7 @@
             "suggest": {
                 "ext-fileinfo": "to use filter |datastream",
                 "ext-mbstring": "to use filters like lower, upper, capitalize, ...",
-                "ext-xml": "to use filters like length, substring, ..."
+                "nette/utils": "to use filter |webalize"
             },
             "type": "library",
             "extra": {
@@ -65,32 +65,38 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "Latte: the amazing template engine for PHP",
+            "description": "☕ Latte: the intuitive and fast template engine for those who want the most secure PHP sites. Introduces context-sensitive escaping.",
             "homepage": "https://latte.nette.org",
             "keywords": [
-                "templating",
+                "context-sensitive",
+                "engine",
+                "escaping",
+                "html",
+                "nette",
+                "security",
+                "template",
                 "twig"
             ],
-            "time": "2017-02-02T01:58:07+00:00"
+            "time": "2018-10-30T17:35:51+00:00"
         },
         {
             "name": "nette/application",
-            "version": "v3.0.0-alpha1",
+            "version": "v3.0.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/application.git",
-                "reference": "b7df270f993f3006d4f1f1d0c3a48df37b6eefec"
+                "reference": "b8238e79d72f414c4c76cbaf8dcad9e2edbbe5d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/application/zipball/b7df270f993f3006d4f1f1d0c3a48df37b6eefec",
-                "reference": "b7df270f993f3006d4f1f1d0c3a48df37b6eefec",
+                "url": "https://api.github.com/repos/nette/application/zipball/b8238e79d72f414c4c76cbaf8dcad9e2edbbe5d8",
+                "reference": "b8238e79d72f414c4c76cbaf8dcad9e2edbbe5d8",
                 "shasum": ""
             },
             "require": {
-                "nette/component-model": "^3.0",
+                "nette/component-model": "^3.0.0-RC1",
                 "nette/http": "^3.0",
-                "nette/utils": "^2.4 || ^3.0",
+                "nette/utils": "^3.0",
                 "php": ">=7.1"
             },
             "conflict": {
@@ -102,11 +108,11 @@
             "require-dev": {
                 "latte/latte": "^3.0",
                 "mockery/mockery": "^1.0",
-                "nette/di": "^2.4 || ~3.0.0",
-                "nette/forms": "^3.0",
+                "nette/di": "^v3.0.0-beta2",
+                "nette/forms": "^3.0.0-RC1",
                 "nette/robot-loader": "^2.4.2 || ^3.0",
                 "nette/security": "^3.0",
-                "nette/tester": "^2.0",
+                "nette/tester": "^2.0.1",
                 "tracy/tracy": "^2.4"
             },
             "suggest": {
@@ -143,22 +149,34 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "Nette Application MVC Component",
+            "description": "🏆 Nette Application: a full-stack component-based MVC kernel for PHP that helps you write powerful and modern web applications. Write less, have cleaner code and your work will bring you joy.",
             "homepage": "https://nette.org",
-            "time": "2017-02-02T02:32:03+00:00"
+            "keywords": [
+                "Forms",
+                "component-based",
+                "control",
+                "framework",
+                "mvc",
+                "mvp",
+                "nette",
+                "presenter",
+                "routing",
+                "seo"
+            ],
+            "time": "2018-11-23T16:43:14+00:00"
         },
         {
             "name": "nette/component-model",
-            "version": "v3.0.0-beta2",
+            "version": "v3.0.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/component-model.git",
-                "reference": "1a6d34d93172f2a722d775bad47a746d94944ac0"
+                "reference": "d77f3fccd3af3bdb65fa9d2450c57d5f1c7b19c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/component-model/zipball/1a6d34d93172f2a722d775bad47a746d94944ac0",
-                "reference": "1a6d34d93172f2a722d775bad47a746d94944ac0",
+                "url": "https://api.github.com/repos/nette/component-model/zipball/d77f3fccd3af3bdb65fa9d2450c57d5f1c7b19c9",
+                "reference": "d77f3fccd3af3bdb65fa9d2450c57d5f1c7b19c9",
                 "shasum": ""
             },
             "require": {
@@ -206,28 +224,28 @@
                 "components",
                 "nette"
             ],
-            "time": "2018-03-20T16:31:10+00:00"
+            "time": "2018-10-18T22:56:45+00:00"
         },
         {
             "name": "nette/di",
-            "version": "v3.0.0-alpha1",
+            "version": "v3.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/di.git",
-                "reference": "5a589e2a6c72ce537684eb8ae98f584c07d73c0a"
+                "reference": "9de80d0150e32f0f72e4000e597c61724fcbb563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/di/zipball/5a589e2a6c72ce537684eb8ae98f584c07d73c0a",
-                "reference": "5a589e2a6c72ce537684eb8ae98f584c07d73c0a",
+                "url": "https://api.github.com/repos/nette/di/zipball/9de80d0150e32f0f72e4000e597c61724fcbb563",
+                "reference": "9de80d0150e32f0f72e4000e597c61724fcbb563",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
                 "nette/neon": "^2.3.3 || ~3.0.0",
-                "nette/php-generator": "^2.5 || ~3.0.0",
-                "nette/utils": "^2.4.3 || ~3.0.0",
-                "php": ">=7.0"
+                "nette/php-generator": "^3.2",
+                "nette/utils": "^2.5 || ~3.0.0",
+                "php": ">=7.1"
             },
             "conflict": {
                 "nette/bootstrap": "<2.4",
@@ -246,6 +264,9 @@
             "autoload": {
                 "classmap": [
                     "src/"
+                ],
+                "files": [
+                    "src/compatibility.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -264,22 +285,31 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "Nette Dependency Injection Component",
+            "description": "💎 Nette Dependency Injection Container: Flexible, compiled and full-featured DIC with perfectly usable autowiring and support for all new PHP 7.1 features.",
             "homepage": "https://nette.org",
-            "time": "2017-02-02T03:11:32+00:00"
+            "keywords": [
+                "compiled",
+                "di",
+                "dic",
+                "factory",
+                "ioc",
+                "nette",
+                "static"
+            ],
+            "time": "2018-11-23T15:37:02+00:00"
         },
         {
             "name": "nette/http",
-            "version": "v3.0.0-beta",
+            "version": "v3.0.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/http.git",
-                "reference": "57dd6591118bbbda29719c7ec668297e05bc5895"
+                "reference": "fe9a87fbc46e69b592517f2d0462b5543223e8aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/http/zipball/57dd6591118bbbda29719c7ec668297e05bc5895",
-                "reference": "57dd6591118bbbda29719c7ec668297e05bc5895",
+                "url": "https://api.github.com/repos/nette/http/zipball/fe9a87fbc46e69b592517f2d0462b5543223e8aa",
+                "reference": "fe9a87fbc46e69b592517f2d0462b5543223e8aa",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +320,7 @@
                 "nette/nette": "<2.2"
             },
             "require-dev": {
-                "nette/di": "^2.4.8 || ~3.0.0",
+                "nette/di": "^v3.0.0-beta2",
                 "nette/tester": "^2.0",
                 "tracy/tracy": "^2.4"
             },
@@ -338,7 +368,7 @@
                 "session",
                 "url"
             ],
-            "time": "2018-03-20T21:53:49+00:00"
+            "time": "2018-11-23T16:03:43+00:00"
         },
         {
             "name": "nette/neon",
@@ -403,21 +433,21 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.0.5",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "ea90209c2e8a7cd087b2742ca553c047a8df5eff"
+                "reference": "9de4e093a130f7a1bd175198799ebc0efbac6924"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/ea90209c2e8a7cd087b2742ca553c047a8df5eff",
-                "reference": "ea90209c2e8a7cd087b2742ca553c047a8df5eff",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/9de4e093a130f7a1bd175198799ebc0efbac6924",
+                "reference": "9de4e093a130f7a1bd175198799ebc0efbac6924",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^2.4.2 || ~3.0.0",
-                "php": ">=7.0"
+                "php": ">=7.1"
             },
             "conflict": {
                 "nette/nette": "<2.2"
@@ -429,7 +459,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.2-dev"
                 }
             },
             "autoload": {
@@ -453,7 +483,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 7.2 features.",
+            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 7.3 features.",
             "homepage": "https://nette.org",
             "keywords": [
                 "code",
@@ -461,24 +491,24 @@
                 "php",
                 "scaffolding"
             ],
-            "time": "2018-08-09T14:32:27+00:00"
+            "time": "2018-11-27T19:00:14+00:00"
         },
         {
             "name": "nette/utils",
-            "version": "v2.5.3",
+            "version": "v3.0.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "17b9f76f2abd0c943adfb556e56f2165460b15ce"
+                "reference": "9389dec24f6e8f9099e735d81b6aa167d1fa749f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/17b9f76f2abd0c943adfb556e56f2165460b15ce",
-                "reference": "17b9f76f2abd0c943adfb556e56f2165460b15ce",
+                "url": "https://api.github.com/repos/nette/utils/zipball/9389dec24f6e8f9099e735d81b6aa167d1fa749f",
+                "reference": "9389dec24f6e8f9099e735d81b6aa167d1fa749f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=7.1"
             },
             "conflict": {
                 "nette/nette": "<2.2"
@@ -490,7 +520,7 @@
             "suggest": {
                 "ext-gd": "to use Image",
                 "ext-iconv": "to use Strings::webalize() and toAscii()",
-                "ext-intl": "for script transliteration in Strings::webalize() and toAscii()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
                 "ext-json": "to use Nette\\Utils\\Json",
                 "ext-mbstring": "to use Strings::lower() etc...",
                 "ext-xml": "to use Strings::length() etc. when mbstring is not available"
@@ -498,15 +528,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
                 "classmap": [
                     "src/"
-                ],
-                "files": [
-                    "src/loader.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -543,7 +570,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2018-09-18T10:22:16+00:00"
+            "time": "2018-10-30T16:15:34+00:00"
         }
     ],
     "aliases": [],

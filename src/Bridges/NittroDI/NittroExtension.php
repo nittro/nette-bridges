@@ -6,7 +6,7 @@ namespace Nittro\Bridges\NittroDI;
 
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Statement;
+use Nette\DI\Definitions\Statement;
 use Nittro\Bridges\NittroLatte\NittroMacros;
 use Nittro\Bridges\NittroLatte\NittroRuntime;
 
