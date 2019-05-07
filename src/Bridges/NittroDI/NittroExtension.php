@@ -29,6 +29,7 @@ class NittroExtension extends CompilerExtension {
 
         if ($latte = $builder->getByType(ILatteFactory::class)) {
             $builder->getDefinition($latte)
+				->getResultDefinition()
                 ->addSetup('addProvider', [ 'nittro', new Statement(NittroRuntime::class) ])
                 ->addSetup(
                     '?->onCompile[] = function ($engine) { ' . NittroMacros::class . '::install($engine->getCompiler(), ?); }', [
