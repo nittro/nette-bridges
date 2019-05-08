@@ -38,7 +38,7 @@ class NittroExtension extends CompilerExtension {
                 ->addSetup(
                     '?->onCompile[] = function ($engine) { ' . NittroMacros::class . '::install($engine->getCompiler(), ?); }', [
                     '@self',
-                    $config['noconflict'],
+                    $config->noconflict,
                 ]);
         }
     }
