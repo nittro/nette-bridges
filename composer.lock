@@ -81,27 +81,27 @@
         },
         {
             "name": "nette/application",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/application.git",
-                "reference": "4f3b250709226c70c8ca0a35f796877bcb72b10d"
+                "reference": "d81167866eccf5ae19929aa759967f29989cbcbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/application/zipball/4f3b250709226c70c8ca0a35f796877bcb72b10d",
-                "reference": "4f3b250709226c70c8ca0a35f796877bcb72b10d",
+                "url": "https://api.github.com/repos/nette/application/zipball/d81167866eccf5ae19929aa759967f29989cbcbb",
+                "reference": "d81167866eccf5ae19929aa759967f29989cbcbb",
                 "shasum": ""
             },
             "require": {
                 "nette/component-model": "^3.0",
-                "nette/http": "^3.0",
+                "nette/http": "^3.0.2",
                 "nette/routing": "~3.0.0",
                 "nette/utils": "^3.0",
                 "php": ">=7.1"
             },
             "conflict": {
-                "nette/di": "<3.0",
+                "nette/di": "<3.0-stable",
                 "nette/forms": "<3.0",
                 "nette/latte": "<3.0"
             },
@@ -163,7 +163,7 @@
                 "routing",
                 "seo"
             ],
-            "time": "2019-04-03T19:36:15+00:00"
+            "time": "2019-07-08T10:01:44+00:00"
         },
         {
             "name": "nette/component-model",
@@ -228,16 +228,16 @@
         },
         {
             "name": "nette/di",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/di.git",
-                "reference": "19d83539245aaacb59470828919182411061841f"
+                "reference": "4aff517a1c6bb5c36fa09733d4cea089f529de6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/di/zipball/19d83539245aaacb59470828919182411061841f",
-                "reference": "19d83539245aaacb59470828919182411061841f",
+                "url": "https://api.github.com/repos/nette/di/zipball/4aff517a1c6bb5c36fa09733d4cea089f529de6d",
+                "reference": "4aff517a1c6bb5c36fa09733d4cea089f529de6d",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +297,7 @@
                 "nette",
                 "static"
             ],
-            "time": "2019-04-03T19:35:46+00:00"
+            "time": "2019-08-07T12:11:33+00:00"
         },
         {
             "name": "nette/finder",
@@ -363,16 +363,16 @@
         },
         {
             "name": "nette/http",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/http.git",
-                "reference": "2fa91a76583c3cb3e7d1a51c501c5653a6a11f8a"
+                "reference": "96d8a7e05e41af89569ddf8ad662c27fcf1a9a9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/http/zipball/2fa91a76583c3cb3e7d1a51c501c5653a6a11f8a",
-                "reference": "2fa91a76583c3cb3e7d1a51c501c5653a6a11f8a",
+                "url": "https://api.github.com/repos/nette/http/zipball/96d8a7e05e41af89569ddf8ad662c27fcf1a9a9b",
+                "reference": "96d8a7e05e41af89569ddf8ad662c27fcf1a9a9b",
                 "shasum": ""
             },
             "require": {
@@ -380,7 +380,7 @@
                 "php": ">=7.1"
             },
             "conflict": {
-                "nette/di": "<3.0"
+                "nette/di": "<3.0.0-stable"
             },
             "require-dev": {
                 "nette/di": "^3.0",
@@ -431,7 +431,7 @@
                 "session",
                 "url"
             ],
-            "time": "2019-04-03T11:57:10+00:00"
+            "time": "2019-07-08T20:28:51+00:00"
         },
         {
             "name": "nette/neon",
@@ -496,16 +496,16 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "acff8b136fad84b860a626d133e791f95781f9f5"
+                "reference": "aea6e81437bb238e5f0e5b5ce06337433908e63b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/acff8b136fad84b860a626d133e791f95781f9f5",
-                "reference": "acff8b136fad84b860a626d133e791f95781f9f5",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/aea6e81437bb238e5f0e5b5ce06337433908e63b",
+                "reference": "aea6e81437bb238e5f0e5b5ce06337433908e63b",
                 "shasum": ""
             },
             "require": {
@@ -551,7 +551,7 @@
                 "php",
                 "scaffolding"
             ],
-            "time": "2019-03-15T03:41:13+00:00"
+            "time": "2019-07-05T13:01:56+00:00"
         },
         {
             "name": "nette/robot-loader",
