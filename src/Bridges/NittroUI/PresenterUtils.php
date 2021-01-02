@@ -47,7 +47,7 @@ trait PresenterUtils {
      * @param array $args
      * @return void
      */
-    abstract public function redirect($destination, $args = []) : void;
+    abstract public function redirect(string $destination, $args = []) : void;
 
 
     abstract public function hasFlashSession() : bool;
