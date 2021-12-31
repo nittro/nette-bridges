@@ -40,14 +40,14 @@ trait PresenterUtils {
      * @param array $args
      * @return string
      */
-    abstract public function link(string $destination, ...$args) : string;
+    abstract public function link(string $destination, $args = []) : string;
 
     /**
      * @param string $destination
      * @param array $args
      * @return void
      */
-    abstract public function redirect(string $destination, ...$args) : void;
+    abstract public function redirect(string $destination, $args = []) : void;
 
 
     abstract public function hasFlashSession() : bool;
