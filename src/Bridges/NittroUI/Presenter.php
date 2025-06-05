@@ -19,7 +19,7 @@ abstract class Presenter extends UI\Presenter {
     }
 
 
-    protected function afterRender()
+    protected function afterRender(): void
     {
         parent::afterRender();
 
