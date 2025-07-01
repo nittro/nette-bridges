@@ -25,7 +25,7 @@ trait PresenterUtils {
 
     abstract public function isAjax() : bool;
 
-    abstract public function isControlInvalid(string $snippet = NULL) : bool;
+    abstract public function isControlInvalid(?string $snippet = NULL) : bool;
 
     /**
      * @param string $snippet
